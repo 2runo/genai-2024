@@ -1,0 +1,547 @@
+Execution Result:
+
+## impressions - # of times the Instagram media object has been viewed.
+Your value: 26887.0
+Z-score: 1.398
+
+## reach - # of unique Instagram accounts that viewed the media object.
+Your value: 10058.0
+Z-score: 0.829
+
+## saved - # of unique Instagram accounts that saved the media object.
+Your value: 74.0
+Z-score: 1.227
+
+## comments - # of comments on the post, excluding deleted comments.
+Your value: 77.0
+Z-score: 1.423
+
+## follows - # of accounts that started following your profile after interacting with the media.
+Your value: 13.0
+Z-score: -0.316
+
+## likes - # of likes on the post, excluding likes that were later removed.
+Your value: 252.0
+Z-score: 0.356
+
+## profile_activity - # of actions users took on your profile after interacting with the media.
+Your value: 61.0
+Z-score: -0.396
+
+## profile_visits - # of times people visited your profile.
+Your value: 396.0
+Z-score: 0.117
+
+## shares - # of times the media object was shared.
+Your value: 44.0
+Z-score: 0.265
+
+## total_interactions - # of likes, saves, comments, and shares, excluding unlikes, unsaves, and deleted comments.
+Your value: 447.0
+Z-score: 0.64
+
+## engagement_rate - # of total interactions(e.g. likes, comments) per reach
+Your value: 0.044
+Z-score: -0.092
+
+
+
+
+--- Iteration 1 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Impressions**
+  - Judgment: Impressions show a high z-score of 1.398, indicating that posts are viewed more frequently than peers. This suggests successful content distribution.
+  - Plan: Explore metrics like `impressions / reach` to understand how many times the content is viewed per unique user.
+
+- **Finding Outlier Metric: Comments**
+  - Judgment: Comments have a high z-score of 1.423, indicating higher engagement through comments than peers. This might indicate that the content encourages discussion.
+  - Plan: Analyzing `comments / total_interactions` could provide insight into the proportion of engagement coming from comments.
+
+- **Finding Outlier Metric: Saved**
+  - Judgment: Saved posts have a z-score of 1.227, suggesting higher interests in saving the content compared to peers.
+  - Plan: Check `saved / total_interactions` to identify the percentage of interactions as saves.
+
+2. **Diagnosis**
+
+Diagnosis: Impressions are notably high, indicating content is viewed multiple times. Analysis of `impressions / reach` is needed.
+Diagnosis: Comments are significantly high, suggesting content encourages active discussions. Explore `comments / total_interactions`.
+Diagnosis: Savings are higher than peers, showing content resonates enough to save.
+
+# Python Code
+```python
+# Calculate Impressions per Reach
+impressions_per_reach = safe_divide(impressions, reach)
+impressions_per_reach_arr = safe_divide(impressions_arr, reach_arr)
+calculate_statistics('impressions_per_reach', '# of times content is viewed per unique viewer.', impressions_per_reach, impressions_per_reach_arr)
+
+# Calculate Comments per Total Interactions
+comments_per_total_interactions = safe_divide(comments, total_interactions)
+comments_per_total_interactions_arr = safe_divide(comments_arr, total_interactions_arr)
+calculate_statistics('comments_per_total_interactions', '# of comments as a proportion of total interactions.', comments_per_total_interactions, comments_per_total_interactions_arr)
+
+# Calculate Saved per Total Interactions
+saved_per_total_interactions = safe_divide(saved, total_interactions)
+saved_per_total_interactions_arr = safe_divide(saved_arr, total_interactions_arr)
+calculate_statistics('saved_per_total_interactions', '# of times content is saved as a proportion of total interactions.', saved_per_total_interactions, saved_per_total_interactions_arr)
+```
+
+Execution Result:
+
+## impressions_per_reach - # of times content is viewed per unique viewer.
+Your value: 2.673
+Z-score: 1.152
+
+## comments_per_total_interactions - # of comments as a proportion of total interactions.
+Your value: 0.172
+Z-score: 0.73
+
+## saved_per_total_interactions - # of times content is saved as a proportion of total interactions.
+Your value: 0.166
+Z-score: 0.677
+
+
+
+
+--- Iteration 2 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Impressions**
+  - Judgment: Impressions had a high initial z-score of 1.398, indicating that the content is viewed more frequently than peers. Analysis of `impressions_per_reach` also showed a high z-score of 1.152, suggesting multiple views per unique account.
+  - Plan: Investigate whether this high frequency of views results in enhanced engagement metrics or are merely repeated views (potentially skewing actual engagement).
+
+- **Finding Outlier Metric: Comments**
+  - Judgment: Comments had a high z-score of 1.423, suggesting the content is effectively generating discussions. The subsequent analysis with `comments_per_total_interactions` resulted in a z-score of 0.73, showing that comments constitute a significant proportion of interactions.
+  - Plan: Investigate further into the type of content posted to understand why it encourages commenting.
+
+- **Finding Outlier Metric: Saved**
+  - Judgment: Saved metrics showed higher interest compared to peers with a z-score of 1.227. The analysis of `saved_per_total_interactions` returned a z-score of 0.677, indicating a notable portion of interactions derives from saves.
+  - Plan: Understand the characteristics of posts leading users to save, potentially utilizing this insight to model future content.
+
+2. **Diagnosis**
+
+- **Diagnosis for Impressions:** High `impressions` relative to `reach` indicates that content is often revisited. This suggests effective content distribution but raises questions about whether such views translate into tangible engagement; further probing into user retention based on consistent viewership is necessary.
+
+- **Diagnosis for Comments:** High volume of comments infers content that naturally elicits responses, benefiting from discussions which can amplify reach and visibility.
+
+- **Diagnosis for Saved:** A preference for saving indicates content value that resonates over time, suggesting long-term relevancy and usefulness.
+
+# Python Code
+```python
+# Further Analysis - Investigate User Retention through Consistent Viewership
+# Calculate Profile Activity per Impressions
+profile_activity_per_impressions = safe_divide(profile_activity, impressions)
+profile_activity_per_impressions_arr = safe_divide(profile_activity_arr, impressions_arr)
+calculate_statistics('profile_activity_per_impressions', 'Profile activity per impression to understand if repeated views result in actionable user behavior.', profile_activity_per_impressions, profile_activity_per_impressions_arr)
+
+# Explore content characteristics that drive commenting and saving
+# For actual implementation, manually examine content but here calculate proposed commenting/saving tendencies:
+content_value_tendency = safe_divide(saved, comments + saves)
+content_value_tendency_arr = safe_divide(saved_arr, comments_arr + saved_arr)
+calculate_statistics('content_value_tendency', 'Tendency of content to be saved rather than just commented. Provides potential insight into the utility and engagement nature of the post.', content_value_tendency, content_value_tendency_arr)
+```
+This analysis provides insights into whether frequent viewership results in expected engagement and depicts content strategies that garner interactions.
+
+name 'saves' is not defined
+Execution Result:
+
+## profile_activity_per_impressions - Profile activity per impression to understand if repeated views result in actionable user behavior.
+Your value: 0.002
+Z-score: -0.949
+
+
+
+
+--- Iteration 3 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Profile Activity Per Impressions**
+  - Judgment: Profile activity per impression reveals a lower z-score of -0.949, implying that while impressions are high, they may not translate into significant user actions on the profile.
+  - Plan: Explore `profile_visits / impressions` to determine if these impressions drive profile traffic.
+
+- **Finding Outlier Metric: Content Value Tendency**
+  - Judgment: The calculation for a tendency towards content saving over commenting (e.g., `content_value_tendency`) should be tweaked. The potential typo in the previous step needs correction for accurate insight.
+  - Plan: Calculate the revised `content_value_tendency` by correctly segregating saved content from comments to depict accurate ratios.
+
+2. **Diagnosis**
+
+- **Diagnosis for Profile Activity Per Impressions:** This metric’s lower z-score suggests that despite user interest in the content, it's not effectively driving them to perform actions on the profile. This discrepancy highlights a possible gap between content interest and user engagement with the profile.
+
+# Python Code
+```python
+# Calculate Profile Visits per Impressions
+profile_visits_per_impressions = safe_divide(profile_visits, impressions)
+profile_visits_per_impressions_arr = safe_divide(profile_visits_arr, impressions_arr)
+calculate_statistics('profile_visits_per_impressions', 'Profile visits per impression to understand if impressions lead to profile traffic.', profile_visits_per_impressions, profile_visits_per_impressions_arr)
+
+# Corrected Calculation for Content Value Tendency
+# Calculate Saving tendency per post to understand the inclination towards saving.
+content_value_tendency_corrected = safe_divide(saved, saved + comments)
+content_value_tendency_corrected_arr = safe_divide(saved_arr, saved_arr + comments_arr)
+calculate_statistics('content_value_tendency_corrected', 'Revised tendency of content to be saved in comparison to being commented on, illustrating the tendency of posts to be saved for later.', content_value_tendency_corrected, content_value_tendency_corrected_arr)
+```
+Execution Result:
+
+## profile_visits_per_impressions - Profile visits per impression to understand if impressions lead to profile traffic.
+Your value: 0.015
+Z-score: -0.842
+
+## content_value_tendency_corrected - Revised tendency of content to be saved in comparison to being commented on, illustrating the tendency of posts to be saved for later.
+Your value: 0.49
+Z-score: -0.001
+
+
+
+
+--- Iteration 4 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Profile Activity Per Impressions**
+  - Judgment: With a low z-score of -0.949, profile activity per impression remains weak despite high impressions, indicating that increased viewership doesn’t correlate with user actions on the profile.     
+  - Plan: Examine whether `follows / impressions` provides any insight into whether users are driven to follow after viewing the content multiple times.
+
+- **Finding Outlier Metric: Profile Visits Per Impressions**
+  - Judgment: A z-score of -0.842 for profile visits per impression further highlights that even though people are watching the content multiple times, very few of them are visiting the profile.
+  - Plan: Investigate `follows / profile_visits` to ascertain if people visiting the profile actually convert into followers.
+
+2. **Diagnosis**
+
+- **Diagnosis for Profile Activity Per Impressions:** Consistent pattern of low engagement despite high views. This continued trend may imply a need for optimizing content to the landing page connection, potentially adjusting content calls-to-action to drive actions.
+
+- **Diagnosis for Profile Visits Per Impressions:** Mirrors the challenge faced with impressions and actions, reinforcing a gap between viewer curiosity and conversion into active profile engagement.
+
+# Python Code
+```python
+# Calculate Follows per Impressions
+follows_per_impressions = safe_divide(follows, impressions)
+follows_per_impressions_arr = safe_divide(follows_arr, impressions_arr)
+calculate_statistics('follows_per_impressions', 'Follows per impression to gauge if repeated views stimulate following behavior.', follows_per_impressions, follows_per_impressions_arr)
+
+# Calculate Follows per Profile Visits
+follows_per_profile_visits = safe_divide(follows, profile_visits)
+follows_per_profile_visits_arr = safe_divide(follows_arr, profile_visits_arr)
+calculate_statistics('follows_per_profile_visits', 'Follows per profile visit to determine conversion rate from visits to follows.', follows_per_profile_visits, follows_per_profile_visits_arr)
+```
+Execution Result:
+
+## follows_per_impressions - Follows per impression to gauge if repeated views stimulate following behavior.
+Your value: 0.0
+Z-score: -0.806
+
+## follows_per_profile_visits - Follows per profile visit to determine conversion rate from visits to follows.
+Your value: 0.033
+Z-score: -0.667
+
+
+
+
+--- Iteration 5 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Follows Per Impressions**
+  - Judgment: The Z-score of -0.806 indicates that even though content is frequently viewed, this doesn't translate into users following the profile. It highlights a deficiency in converting impressions to follows.
+  - Plan: Explore whether `shares / impressions` is another area that could potentially drive engagement and followership.
+
+- **Finding Outlier Metric: Follows Per Profile Visits**
+  - Judgment: A Z-score of -0.667 shows that profile visits aren't effectively converting into follows. This could hint at a disconnect between the content viewed and the profile's appeal.
+  - Plan: Examine `profile_activity / profile_visits` to determine if profile visits initiate any user actions.
+
+2. **Diagnosis**
+
+- **Diagnosis for Follows Per Impressions:** Continued exploration is required to establish what content elements might be optimized to convert views into follows.
+- **Diagnosis for Follows Per Profile Visits:** The lack of conversion suggests a possible need to enhance the profile's appeal—potentially optimizing the landing profile visuals or CTAs to boost the follow rate.
+
+# Python Code
+```python
+# Calculate Shares per Impressions
+shares_per_impressions = safe_divide(shares, impressions)
+shares_per_impressions_arr = safe_divide(shares_arr, impressions_arr)
+calculate_statistics('shares_per_impressions', 'Shares per impression to see if shared content can drive follows or further engagement.', shares_per_impressions, shares_per_impressions_arr)
+
+# Calculate Profile Activity per Profile Visits
+profile_activity_per_profile_visits = safe_divide(profile_activity, profile_visits)
+profile_activity_per_profile_visits_arr = safe_divide(profile_activity_arr, profile_visits_arr)
+calculate_statistics('profile_activity_per_profile_visits', 'Profile activity per profile visit to determine if visits lead to any activity.', profile_activity_per_profile_visits, profile_activity_per_profile_visits_arr)
+```
+Execution Result:
+
+## shares_per_impressions - Shares per impression to see if shared content can drive follows or further engagement.
+Your value: 0.002
+Z-score: -0.701
+
+## profile_activity_per_profile_visits - Profile activity per profile visit to determine if visits lead to any activity.
+Your value: 0.154
+Z-score: -1.135
+
+
+
+
+--- Iteration 6 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Profile Activity Per Profile Visits**
+  - Judgment: The z-score of -1.135 indicates that even profile visits are infrequently leading to any significant actions in numbers considered to be normal. This supports the notion of a disconnect between profile visits and engagement activity.
+  - Plan: Potentially calculate `engagement_conversion_rate = (likes + comments + shares + saves) / profile_visits` to evaluate how effectively profile visits turn into various forms of engagements.
+
+- **Finding Outlier Metric: Shares Per Impressions**
+  - Judgment: The z-score of -0.701 implies that despite impressions, the content does not likewise encourage sharing compared to peers.
+  - Plan: Assess the ratio of `shares / engagement_rate` to determine if differing engagement types correlate or drive better sharing behavior.
+
+2. **Diagnosis**
+
+- **Diagnosis for Profile Activity Per Profile Visits:** A continued theme of effective content consumption not translating into further proper engagement. Emphasizing profile stickiness and CTAs could help bridge this gap.
+- **Diagnosis for Shares Per Impressions:** This implies a potential inability to leverage views into shares efficiently, requiring bolder sharing prompts or inherently shareable content types.
+
+# Python Code
+```python
+# Calculate Engagement Conversion Rate
+engagement_conversion_rate = safe_divide(likes + comments + shares + saved, profile_visits)
+engagement_conversion_rate_arr = safe_divide(likes_arr + comments_arr + shares_arr + saved_arr, profile_visits_arr)
+calculate_statistics('engagement_conversion_rate', 'Conversion rate of profile visits into likes, comments, shares, and saves.', engagement_conversion_rate, engagement_conversion_rate_arr)
+
+# Calculate Shares Per Engagement Rate
+shares_per_engagement_rate = safe_divide(shares, engagement_rate)
+shares_per_engagement_rate_arr = safe_divide(shares_arr, engagement_rate_arr)
+calculate_statistics('shares_per_engagement_rate', 'Ratio of shares to engagement rate, to understand if engagement correlates with sharing behavior.', shares_per_engagement_rate, shares_per_engagement_rate_arr)
+```
+Execution Result:
+
+## engagement_conversion_rate - Conversion rate of profile visits into likes, comments, shares, and saves.
+Your value: 1.129
+Z-score: -0.041
+
+## shares_per_engagement_rate - Ratio of shares to engagement rate, to understand if engagement correlates with sharing behavior.
+Your value: 990.049
+Z-score: 0.26
+
+
+
+
+--- Iteration 7 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Engagement Conversion Rate**
+  - Judgment: The Z-score of -0.041 for the `engagement_conversion_rate` implies a fairly normal conversion of profile visits into engagements compared to peers, indicating stability in conversion despite previous observations about potential user interest not translating to actions.
+  - Plan: Given the results, it's worth examining `saves / profile_visits` to determine if visitors find enough value in the content to save it during their visits.
+
+- **Finding Outlier Metric: Shares Per Engagement Rate**
+  - Judgment: The Z-score of 0.26 for `shares_per_engagement_rate` indicates slightly above-average behavior in sharing relative to engagement, which might not be significant, but provides a hint that some engagements lead to sharing.
+  - Plan: Consider measuring the `shares / total_interactions` to identify the proportion of interactions that are shares, offering insight into whether interactions lead to content propagation.
+
+2. **Diagnosis**
+
+- **Diagnosis for Engagement Conversion Rate:** The rate is relatively neutral and shows a balance in turning profile visits into engagements, suggesting that while there's an opportunity for improvement, it isn't a significant issue currently.
+
+- **Diagnosis for Shares Per Engagement Rate:** Although not drastically high, this metric shows that some interactions naturally lead to sharing, suggesting existing interactions have potential sharing actions embedded within.
+
+# Python Code
+```python
+# Calculate Saves Per Profile Visits
+saves_per_profile_visits = safe_divide(saved, profile_visits)
+saves_per_profile_visits_arr = safe_divide(saved_arr, profile_visits_arr)
+calculate_statistics('saves_per_profile_visits', 'Proportion of profile visits that result in the content being saved.', saves_per_profile_visits, saves_per_profile_visits_arr)
+
+# Calculate Shares Per Total Interactions
+shares_per_total_interactions = safe_divide(shares, total_interactions)
+shares_per_total_interactions_arr = safe_divide(shares_arr, total_interactions_arr)
+calculate_statistics('shares_per_total_interactions', 'Proportion of interactions that are shares, showing shareable content.', shares_per_total_interactions, shares_per_total_interactions_arr)
+```
+
+Execution Result:
+
+## saves_per_profile_visits - Proportion of profile visits that result in the content being saved.
+Your value: 0.187
+Z-score: 0.411
+
+## shares_per_total_interactions - Proportion of interactions that are shares, showing shareable content.
+Your value: 0.098
+Z-score: -0.347
+
+
+
+
+--- Iteration 8 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Saves Per Profile Visits**
+  - Judgment: The z-score of 0.411 suggests a slightly above-average rate of profile visits translating into content being saved compared to peers, indicating that visitors find value in the content.
+  - Plan: Analyze whether `likes / saves` can provide deeper insights into how profiles engage with content, perhaps determining if they favor immediate reactions or prefer to save for later consumption.     
+
+- **Finding Outlier Metric: Shares Per Total Interactions**
+  - Judgment: With a z-score of -0.347, the proportion of interactions that result in shares is slightly below average, suggesting a potential to make content more shareable.
+  - Plan: Investigate if `profile_activity / shares` might indicate how sharing behavior influences or translates into profile activity.
+
+2. **Diagnosis**
+
+- **Diagnosis for Saves Per Profile Visits:** The tendency of users to save content suggests visitors see intrinsic value justifying the action, signaling a positive perception albeit not excessively higher than peers.
+
+- **Diagnosis for Shares Per Total Interactions:** There's an opportunity to enhance content shareability, ensuring it reaches new audiences, potentially optimized by tweaking content presentation or sharing incentives.
+
+# Python Code
+```python
+# Calculate Likes Per Saves
+likes_per_saves = safe_divide(likes, saved)
+likes_per_saves_arr = safe_divide(likes_arr, saved_arr)
+calculate_statistics('likes_per_saves', 'Ratio of likes to saves, indicating preference for immediate engagement versus deferred actions.', likes_per_saves, likes_per_saves_arr)
+
+# Calculate Profile Activity Per Shares
+profile_activity_per_shares = safe_divide(profile_activity, shares)
+profile_activity_per_shares_arr = safe_divide(profile_activity_arr, shares_arr)
+calculate_statistics('profile_activity_per_shares', 'Profile activity per share, to assess engagement stemming from sharing activity.', profile_activity_per_shares, profile_activity_per_shares_arr)
+```
+Execution Result:
+
+## likes_per_saves - Ratio of likes to saves, indicating preference for immediate engagement versus deferred actions.
+Your value: 3.405
+Z-score: -0.628
+
+## profile_activity_per_shares - Profile activity per share, to assess engagement stemming from sharing activity.
+Your value: 1.386
+Z-score: -0.628
+
+
+
+
+--- Iteration 9 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Likes Per Saves**
+  - Judgment: This metric has a z-score of -0.628, indicating a below-average tendency for immediate interactions (likes) relative to deferred actions (saves). This suggests a potential opportunity to increase immediate engagement.
+  - Plan: Investigate the `comments / saves` ratio to see if engagement via comments correlates with content being saved, offering insights into types of content that could foster immediate interactions.     
+
+- **Finding Outlier Metric: Profile Activity Per Shares**
+  - Judgment: With a z-score of -0.628, this metric shows that sharing doesn't significantly result in increased profile activity compared to peers. This could indicate that either shared content lacks a compelling reason for further interaction, or that shares are not targeting new audiences effectively.
+  - Plan: Examine `follows / shares` to assess if shared content translates into driving profile follows.
+
+2. **Diagnosis**
+
+- **Diagnosis for Likes Per Saves:** Content seems to favor deferred engagements (saves) over immediate reactions (likes). Adjusting strategies to blend these engagements can potentially uplift immediate content interactions.
+
+- **Diagnosis for Profile Activity Per Shares:** The relatively low engagement after sharing calls for ensuring shared content includes elements that induce interactions or revisiting targeting methodologies.
+
+# Python Code
+```python
+# Calculate Comments Per Saves
+comments_per_saves = safe_divide(comments, saved)
+comments_per_saves_arr = safe_divide(comments_arr, saved_arr)
+calculate_statistics(
+    'comments_per_saves',
+    'Ratio of comments to saves, assessing if content prompting comments is likely to also be saved.',
+    comments_per_saves,
+    comments_per_saves_arr
+)
+
+# Calculate Follows Per Shares
+follows_per_shares = safe_divide(follows, shares)
+follows_per_shares_arr = safe_divide(follows_arr, shares_arr)
+calculate_statistics(
+    'follows_per_shares',
+    'Conversion of shares to follows, determining if sharing leads to profile growth.',
+    follows_per_shares,
+    follows_per_shares_arr
+)
+```
+Execution Result:
+
+## comments_per_saves - Ratio of comments to saves, assessing if content prompting comments is likely to also be saved.
+Your value: 1.041
+Z-score: -0.307
+
+## follows_per_shares - Conversion of shares to follows, determining if sharing leads to profile growth.
+Your value: 0.295
+Z-score: -0.501
+
+
+
+
+--- Iteration 10 ---
+
+# Interpretation
+1. **Analysis**
+
+- **Finding Outlier Metric: Comments Per Saves**
+  - Judgment: This metric has a z-score of -0.307, indicating a nearly average tendency for comments when content is saved, suggesting a stable relation between engaging with content through comments and finding it valuable enough to save.
+  - Plan: Assess the `saved / shares` ratio to understand if content saved is also likely to be shared, indicating dual utility.
+
+- **Finding Outlier Metric: Follows Per Shares**
+  - Judgment: The z-score of -0.501 reveals that shared content doesn't lead to as robust a profile growth (follows) as might be expected. This could imply a lack of incentive or motivation within shared content that would convert viewers into followers.
+  - Plan: Explore `engagements / follows` to determine if overall engagements play a role in driving follows, potentially identifying further engagement funnel issues.
+
+2. **Diagnosis**
+
+- **Diagnosis for Comments Per Saves:** The balanced nature of this metric implies that commenting and saving frequently occur together, suggesting that content driving discussions may also possess value perceived by users as worthwhile to revisit.
+
+- **Diagnosis for Follows Per Shares:** The limited conversion efficacy hints that shared content might need refinement to better entice or encourage users to follow post interaction, potentially through enriched call-to-action or shareable value propositions.
+
+# Python Code
+```python
+# Calculate Saved Per Shares
+saved_per_shares = safe_divide(saved, shares)
+saved_per_shares_arr = safe_divide(saved_arr, shares_arr)
+calculate_statistics(
+    'saved_per_shares',
+    'Ratio of saves to shares, examining if content noted for future use is an equally desirable candidate for sharing.',
+    saved_per_shares,
+    saved_per_shares_arr
+)
+
+# Calculate Engagements Per Follows
+engagements_per_follows = safe_divide(total_interactions, follows)
+engagements_per_follows_arr = safe_divide(total_interactions_arr, follows_arr)
+calculate_statistics(
+    'engagements_per_follows',
+    'Conversion of engagements into follows, evaluating engagement\'s role in driving follower growth.',
+    engagements_per_follows,
+    engagements_per_follows_arr
+)
+```
+Execution Result:
+
+## saved_per_shares - Ratio of saves to shares, examining if content noted for future use is an equally desirable candidate for sharing.
+Your value: 1.682
+Z-score: 0.214
+
+## engagements_per_follows - Conversion of engagements into follows, evaluating engagement's role in driving follower growth.
+Your value: 34.385
+Z-score: 0.12
+
+
+
+
+
+
+## 1. **저조한 팔로우 전환율**
+   Z_SCORES_PLOT([-0.501, 0.214], ['팔로우/공유', '저장/공유'])
+   - **문제**: 공유된 콘텐츠가 팔로우로 잘 전환되지 않습니다. 팔로우로의 전환율은 낮은데 반해, 콘텐츠는 다른 형태의 상호 작용(예: 저장, 코멘트)을 얻고 있다는 점에서 아쉬움이 있습니다.
+     - 콘텐츠 공유가 팔로우로 이어지지 않는 것은 콘텐츠 본연의 매력이 팔로우 행동을 유도하기에 충분하지 않다는 신호일 수 있습니다.
+
+   - **해결 방법**:
+       - 공유한 콘텐츠가 바로 팔로우로 이어지도록 인센티브를 강화하세요. 예를 들어, 콘텐츠 내에서 팔로잉에 대한 명확한 이유를 제공하거나, 특정 기간 동안의 팔로우 이벤트를 통해 사용자 참여를 유도하는 방안을 고해 보세요.
+       - 콘텐츠의 가치 제안을 명확히 하여 공유 시에도 충분히 전달될 수 있도록 콘텐츠 구성을 개선하세요. 이를 통해 사용자들이 예상을 뛰어넘는 풍부한 경험을 가질 수 있도록 하세요.
+
+## 2. **콘텐츠 가치 인식 개선 필요**
+   Z_SCORES_PLOT([-0.307, -0.347], ['코멘트/저장', '공유/전체 상호작용'])
+   - **문제**: 콘텐츠가 저장될 때 코멘트가 거의 드문드문 있습니다. 일부 사용자가 저장하는 것은 콘텐츠 가치가 있음을 보여주지만, 코멘트로 표현되는 즉각적인 참여는 부족합니다.
+     - 저장/전체 상호작용 비율에서 약간 낮은 z-점수가 보여지듯씩 미미한 차이로 인한 콘텐츠 공유가 경쟁자보다 낮습니다.
+
+   - **해결 방법**:
+       - 콘텐츠를 저장하고 실질적인 상호작용(예: 코멘트, 공유)까지 이어질 수 있도록 콘텐츠의 매력을 재조명의 해야 할 필요성이 있습니다. 이를 위해 저장된 콘텐츠의 관심 포인트를 분석하여 그와 연관된 주제를 콘텐에 추가해 보는 것도 방법입니다.
+       - 사용자들의 감정적 반응을 통한 즉각적인 상호작용을 유도할 수 있도록 콘텐츠 내에서 감정적인 내용을 더 풍부히 표현해 보세요. 예를 들어, 보다 직관적인 질문을 통해 사용자와 바로 연결할 수 있는 기회를 창출세요.
